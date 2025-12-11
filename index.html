@@ -129,20 +129,13 @@
   <!-- header -->
   <div class="header">
     <div class="logo">
-      <img id="logoImg" src="logo/LOGO.jpg" alt="Logo (Upload)" />
+      <img id="logoImg" src="https://raw.githubusercontent.com/ruchi061207-wq/Hello-Notes-Invoice/main/LOGO.jpg" alt="Logo (Upload)" />
     </div>
 
     <div class="company">
       <h2>HELLO NOTES</h2>
       <p>Phone: 8073431538</p>
       <p>No.6 Kurubarahalli Main Road, Kirloskar Layout, Bengaluru - 570079</p>
-    </div>
-
-    <div class="controls hide-on-pdf">
-      <label style="cursor:pointer;">
-        <input id="logoInput" type="file" accept="image/*" style="display:none">
-        <span class="small-btn">Choose Logo</span>
-      </label>
     </div>
   </div>
 
@@ -238,19 +231,6 @@
 <script>
   // initialize date
   (function(){ const d=new Date(); document.getElementById('invoiceDate').value = d.toISOString().split('T')[0]; })();
-
-  // logo upload (medium size)
-  const logoInput = document.getElementById('logoInput');
-  const logoImg = document.getElementById('logoImg');
-  logoImg.src = ''; // default empty; user will upload from system
-
-  logoInput.addEventListener('change', function(e){
-    const f = e.target.files[0];
-    if(!f) return;
-    const reader = new FileReader();
-    reader.onload = function(evt){ logoImg.src = evt.target.result; };
-    reader.readAsDataURL(f);
-  });
 
   // add / remove rows
   function addRow(){
@@ -378,4 +358,5 @@
 </body>
 
 </html>
+
 
