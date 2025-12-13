@@ -121,7 +121,6 @@ button{
 <!-- HEADER -->
 <div class="header">
 <img id="logoPreview" src="LOGO.jpg">>
-<input type="file" class="no-print" accept="image/*" onchange="loadLogo(event)">
 <input value="Hello Notes">
 <input value="GST: 29AFQFS154Q1ZU">
 <input value="No.6 Kurubarahalli Main Road, Kirloskar Layout, Bengaluru – 570079">
@@ -221,9 +220,6 @@ button{
 </div>
 
 <script>
-function loadLogo(e){
-  logoPreview.src=URL.createObjectURL(e.target.files[0]);
-}
 
 function addRow(){
 const t=document.querySelector("#itemsTable tbody");
@@ -284,4 +280,5 @@ calc();
 
 </body>
 </html>
+
 
