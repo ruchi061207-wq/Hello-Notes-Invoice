@@ -143,6 +143,33 @@ button{
 tr,td,th{
   page-break-inside:avoid!important;
 }
+  /* ===== ABSOLUTE FINAL PRINT FIX ===== */
+
+/* Force A4 no matter what user selects */
+@media print {
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  /* Slight scale down to fit LETTER fallback */
+  body {
+    zoom: 0.94;
+  }
+
+  /* Ensure invoice never exceeds page height */
+  .invoice {
+    max-height: 277mm;
+    overflow: hidden;
+  }
+
+  /* Lock totals inside page */
+  .totals {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
 </style>
 </head>
 
@@ -300,3 +327,4 @@ addRow();
 
 </body>
 </html>
+
