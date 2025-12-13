@@ -5,35 +5,139 @@
 <title>Invoice – Hello Notes</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
 *{box-sizing:border-box}
-body{font-family:Poppins,sans-serif;background:#eef3fb;padding:20px;margin:0}
-.invoice{width:210mm;min-height:297mm;background:#fff;margin:auto;padding:20px}
-.header{display:flex;justify-content:center;align-items:center;gap:16px}
-.logo{width:90px;height:90px}
-.logo img{width:100%;height:100%;object-fit:contain}
-.header-text h1{margin:0;color:#2f36b3}
-.header-text p{margin:2px 0;font-size:14px}
-.line{height:3px;background:#2f36b3;margin:15px 0}
-input,select{width:100%;padding:8px;border:1px solid #aaa;border-radius:5px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-table{width:100%;border-collapse:collapse;margin-top:15px}
-th{background:#2f36b3;color:#fff;padding:8px}
-td{border:1px solid #ccc;padding:6px}
-td input{border:none;width:100%}
-.add{margin-top:10px;background:#2f36b3;color:#fff;border:none;padding:8px 14px;border-radius:6px}
-.totals{border:2px solid #d4af37;padding:15px;border-radius:10px;margin-top:20px}
-.row{display:flex;justify-content:space-between;margin:6px 0}
-.right{display:flex;gap:6px}
+body{
+    font-family:Poppins,sans-serif;
+    background:#eef3fb;
+    margin:0;
+    padding:20px;
+}
+.invoice{
+    width:210mm;
+    min-height:297mm;
+    margin:auto;
+    background:#fff;
+    padding:20px;
+}
+.header-center{
+    display:flex;
+    justify-content:center;
+}
+.header-wrap{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+.logo-box{
+    width:90px;
+    height:90px;
+    flex-shrink:0;
+}
+.logo-box img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+.header-text{
+    text-align:left;
+}
+.header-text h1{
+    margin:0 0 4px;
+    color:#2f36b3;
+}
+.header-text p{
+    margin:2px 0;
+    font-size:14px;
+}
+.line{
+    height:3px;
+    background:#2f36b3;
+    margin:15px 0;
+}
+label{font-size:14px}
+input,select{
+    width:100%;
+    padding:8px;
+    border:1px solid #aaa;
+    border-radius:5px;
+}
+.grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+.mt10{margin-top:10px}
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+th{
+    background:#2f36b3;
+    color:#fff;
+    padding:8px;
+}
+td{
+    border:1px solid #ccc;
+    padding:6px;
+}
+td input{
+    border:none;
+    width:100%;
+}
+.add{
+    margin-top:10px;
+    background:#2f36b3;
+    color:#fff;
+    border:none;
+    padding:8px 14px;
+    border-radius:6px;
+}
+.totals{
+    border:2px solid #d4af37;
+    padding:15px;
+    border-radius:10px;
+    margin-top:20px;
+}
+.row{
+    display:flex;
+    justify-content:space-between;
+    margin:6px 0;
+}
+.right{
+    display:flex;
+    gap:6px;
+}
 .right input,.right select{width:90px}
-.grand{font-size:18px;font-weight:600}
-.words{margin-top:8px;font-style:italic}
-.actions{margin-top:15px}
-.actions button{background:#2f36b3;color:#fff;border:none;padding:8px 14px;border-radius:6px}
+.grand{
+    font-size:18px;
+    font-weight:600;
+}
+.words{
+    margin-top:8px;
+    font-style:italic;
+}
+.actions{
+    margin-top:15px;
+}
+.actions button{
+    background:#2f36b3;
+    color:#fff;
+    border:none;
+    padding:8px 14px;
+    border-radius:6px;
+    margin-right:8px;
+}
 .no-print{}
-@media print{.no-print{display:none}}
+@media print{
+    .no-print{display:none!important}
+    body{background:#fff;padding:0}
+}
 </style>
 </head>
 
@@ -42,69 +146,94 @@ td input{border:none;width:100%}
 <div class="invoice" id="invoice">
 
 <!-- HEADER -->
-<div class="header">
-<div class="logo">
-<!-- ✅ BASE64 LOGO (NO CORS ISSUE) -->
-<img src="LOGO.jpg" />
-</div>
-<div class="header-text">
-<h1>Hello Notes</h1>
-<p><b>GST:</b> 29AFQFS5154Q1ZU</p>
-<p>No.6 Kurubarahalli Main Road</p>
-<p>Bengaluru – 570079 | 8073431538</p>
-</div>
+<div class="header-center">
+    <div class="header-wrap">
+        <div class="logo-box">
+            <img src="LOGO.jpg" crossorigin="anonymous">
+        </div>
+        <div class="header-text">
+            <h1>Hello Notes</h1>
+            <p><b>GST:</b> 123456789</p>
+            <p>No.6 Kurubarahalli Main Road, Kirloskar Layout</p>
+            <p>Bengaluru – 570079 | Phone: 8073431538</p>
+        </div>
+    </div>
 </div>
 
 <div class="line"></div>
 
+<!-- DETAILS -->
 <div class="grid2">
-<div><label>Invoice No</label><input></div>
-<div><label>Date</label><input type="date"></div>
+    <div>
+        <label>Invoice Number</label>
+        <input>
+    </div>
+    <div>
+        <label>Invoice Date</label>
+        <input type="date">
+    </div>
 </div>
 
-<div style="margin-top:10px">
-<label>Customer Name</label>
-<input>
+<div class="mt10">
+    <label>Customer Name</label>
+    <input>
 </div>
 
+<!-- ITEMS -->
 <table id="items">
 <thead>
-<tr><th>Item</th><th>Qty</th><th>Rate</th><th>Total</th><th class="no-print"></th></tr>
+<tr>
+    <th>Item</th>
+    <th>Qty</th>
+    <th>Rate</th>
+    <th>Total</th>
+    <th class="no-print"></th>
+</tr>
 </thead>
 <tbody></tbody>
 </table>
 
 <button class="add no-print" onclick="addRow()">+ Add Item</button>
 
+<!-- TOTALS -->
 <div class="totals">
-<div class="row"><span>Subtotal</span><span id="sub">₹0.00</span></div>
-<div class="row">
-<span>Discount</span>
-<span class="right">
-<input id="disc" type="number" value="0" oninput="calc()">
-<select id="discType" onchange="calc()">
-<option value="%">%</option>
-<option value="₹">₹</option>
-</select>
-</span>
-</div>
-<div class="row">
-<span>GST Base</span>
-<select id="gstBase" onchange="calc()">
-<option value="after">After Discount</option>
-<option value="full">Subtotal</option>
-</select>
-</div>
-<div class="row"><span>GST %</span><input id="gstRate" value="9" oninput="calc()"></div>
-<div class="row"><span>CGST</span><span id="cgst">₹0.00</span></div>
-<div class="row"><span>SGST</span><span id="sgst">₹0.00</span></div>
-<div class="row grand"><span>Grand Total</span><span id="grand">₹0.00</span></div>
-<div class="words" id="words">Amount in words: Zero Rupees Only</div>
+    <div class="row"><span>Subtotal</span><span id="sub">₹0.00</span></div>
+
+    <div class="row">
+        <span>Discount</span>
+        <span class="right">
+            <input type="number" id="disc" value="0" oninput="calc()">
+            <select id="discType" onchange="calc()">
+                <option value="%">%</option>
+                <option value="₹">₹</option>
+            </select>
+        </span>
+    </div>
+
+    <div class="row">
+        <span>GST Base</span>
+        <select id="gstBase" onchange="calc()">
+            <option value="after">After Discount</option>
+            <option value="full">Subtotal</option>
+        </select>
+    </div>
+
+    <div class="row">
+        <span>GST %</span>
+        <input type="number" id="gstRate" value="9" oninput="calc()">
+    </div>
+
+    <div class="row"><span>CGST</span><span id="cgst">₹0.00</span></div>
+    <div class="row"><span>SGST</span><span id="sgst">₹0.00</span></div>
+
+    <div class="row grand"><span>Grand Total</span><span id="grand">₹0.00</span></div>
+    <div class="words" id="words">Amount in words: Zero Rupees Only</div>
 </div>
 
+<!-- ACTIONS -->
 <div class="actions no-print">
-<button onclick="downloadPDF()">Download PDF</button>
-<button onclick="window.print()">Print</button>
+    <button onclick="downloadPDF()">Download PDF</button>
+    <button onclick="printInvoice()">Print</button>
 </div>
 
 </div>
@@ -122,59 +251,97 @@ const grand=document.getElementById("grand");
 const words=document.getElementById("words");
 
 function addRow(){
-const tr=document.createElement("tr");
-tr.innerHTML=`<td><input></td>
-<td><input type="number" value="1" oninput="calc()"></td>
-<td><input type="number" value="0" oninput="calc()"></td>
-<td class="rowTotal">0.00</td>
-<td class="no-print"><button onclick="this.closest('tr').remove();calc()">X</button></td>`;
-items.appendChild(tr); calc();
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+        <td><input></td>
+        <td><input type="number" value="1" oninput="calc()"></td>
+        <td><input type="number" value="0" oninput="calc()"></td>
+        <td class="rowTotal">0.00</td>
+        <td class="no-print"><button onclick="this.closest('tr').remove();calc()">X</button></td>
+    `;
+    items.appendChild(tr);
+    calc();
 }
 
 function numberToWords(n){
-const a=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
-const b=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
-if(n<20) return a[n];
-if(n<100) return b[Math.floor(n/10)]+" "+a[n%10];
-if(n<1000) return a[Math.floor(n/100)]+" Hundred "+numberToWords(n%100);
-if(n<100000) return numberToWords(Math.floor(n/1000))+" Thousand "+numberToWords(n%1000);
-if(n<10000000) return numberToWords(Math.floor(n/100000))+" Lakh "+numberToWords(n%100000);
-return numberToWords(Math.floor(n/10000000))+" Crore "+numberToWords(n%10000000);
+    const a=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+    const b=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+    if(n<20) return a[n];
+    if(n<100) return b[Math.floor(n/10)]+" "+a[n%10];
+    if(n<1000) return a[Math.floor(n/100)]+" Hundred "+numberToWords(n%100);
+    if(n<100000) return numberToWords(Math.floor(n/1000))+" Thousand "+numberToWords(n%1000);
+    if(n<10000000) return numberToWords(Math.floor(n/100000))+" Lakh "+numberToWords(n%100000);
+    return numberToWords(Math.floor(n/10000000))+" Crore "+numberToWords(n%10000000);
 }
 
 function calc(){
-let sub=0;
-items.querySelectorAll("tr").forEach(r=>{
-let t=(+r.children[1].children[0].value||0)*(+r.children[2].children[0].value||0);
-r.querySelector(".rowTotal").innerText=t.toFixed(2);
-sub+=t;
-});
-subEl.innerText="₹"+sub.toFixed(2);
+    let sub=0;
+    items.querySelectorAll("tr").forEach(r=>{
+        let total=(+r.children[1].children[0].value||0)*(+r.children[2].children[0].value||0);
+        r.querySelector(".rowTotal").innerText=total.toFixed(2);
+        sub+=total;
+    });
 
-let d=discType.value=="%"?sub*disc.value/100:+disc.value||0;
-let base=gstBase.value=="after"?sub-d:sub;
-let gst=base*(+gstRate.value/100);
-cgst.innerText="₹"+gst.toFixed(2);
-sgst.innerText="₹"+gst.toFixed(2);
-let total=base+gst*2;
-grand.innerText="₹"+total.toFixed(2);
-words.innerText="Amount in words: "+numberToWords(Math.round(total))+" Rupees Only";
+    subEl.innerText="₹"+sub.toFixed(2);
+    let discount=discType.value=="%"?sub*disc.value/100:+disc.value||0;
+    let base=gstBase.value=="after"?sub-discount:sub;
+    let gst=base*(+gstRate.value/100);
+
+    cgst.innerText="₹"+gst.toFixed(2);
+    sgst.innerText="₹"+gst.toFixed(2);
+
+    let total=base+gst*2;
+    grand.innerText="₹"+total.toFixed(2);
+    words.innerText="Amount in words: "+numberToWords(Math.round(total))+" Rupees Only";
 }
 
-async function downloadPDF(){
-document.querySelectorAll(".no-print").forEach(e=>e.style.display="none");
-const { jsPDF } = window.jspdf;
-const pdf=new jsPDF("p","mm","a4");
-await pdf.html(document.getElementById("invoice"),{
-callback:function(pdf){
-pdf.save("Invoice.pdf");
-document.querySelectorAll(".no-print").forEach(e=>e.style.display="");
-},
-x:0,y:0,width:210,windowWidth:1200
-});
+/* ===== GUARANTEED GITHUB PAGES DOWNLOAD ===== */
+function downloadPDF(){
+    const invoice=document.getElementById("invoice");
+    document.querySelectorAll(".no-print").forEach(e=>e.style.display="none");
+
+    html2canvas(invoice,{scale:2,useCORS:true}).then(canvas=>{
+        const { jsPDF } = window.jspdf;
+        const pdf=new jsPDF("p","mm","a4");
+
+        const imgData=canvas.toDataURL("image/png");
+        const pdfWidth=210;
+        const pdfHeight=(canvas.height*pdfWidth)/canvas.width;
+        let heightLeft=pdfHeight;
+        let position=0;
+
+        pdf.addImage(imgData,"PNG",0,0,pdfWidth,pdfHeight);
+        heightLeft-=297;
+
+        while(heightLeft>0){
+            position=heightLeft-pdfHeight;
+            pdf.addPage();
+            pdf.addImage(imgData,"PNG",0,position,pdfWidth,pdfHeight);
+            heightLeft-=297;
+        }
+
+        const blob=pdf.output("blob");
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement("a");
+        a.href=url;
+        a.download="Invoice.pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        document.querySelectorAll(".no-print").forEach(e=>e.style.display="");
+    });
 }
 
-addRow(); calc();
+function printInvoice(){
+    document.querySelectorAll(".no-print").forEach(e=>e.style.display="none");
+    window.print();
+    setTimeout(()=>document.querySelectorAll(".no-print").forEach(e=>e.style.display=""),500);
+}
+
+addRow();
+calc();
 </script>
 
 </body>
