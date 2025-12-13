@@ -15,44 +15,39 @@ body{
   margin:0;
   padding:12px;
 }
+
+/* A4 container */
 .invoice{
   width:190mm;
-  min-height:277mm;
+  height:277mm;              /* 🔒 FIXED A4 HEIGHT */
   margin:auto;
   background:#fff;
   padding:12px;
-  overflow:hidden;
   border:1px solid #d4af37;
   border-radius:8px;
+  position:relative;        /* anchor totals */
+  overflow:hidden;          /* prevent page spill */
 }
 
 /* HEADER */
 .header{
   display:flex;
-  align-items:stretch;  /* logo and text same height */
   justify-content:center;
+  align-items:center;
   gap:14px;
 }
-.logo{
-  display:flex;
-  align-items:center;
-  /* Set height same as header text */
-  height:auto; /* optional, can remove fixed height */
-}
 .logo img{
-  height:100%;         /* makes logo fill height of parent */
-  max-width:120px;     /* prevents it from being too wide */
-  object-fit:contain;  /* keeps aspect ratio */
+  max-width:120px;
+  object-fit:contain;
 }
-
 .header-text{text-align:center;}
 .header-text h1{margin:0;color:#2f36b3;}
-.header-text p{margin:2px 0;font-size:13px;color:#333;}
+.header-text p{margin:2px 0;font-size:13px;}
 
 .line{height:4px;background:#2f36b3;margin:12px 0;}
 
 /* FORM */
-label{font-size:13px;display:block;margin-bottom:4px;color:#333;}
+label{font-size:13px;display:block;margin-bottom:4px;}
 input,select{
   width:100%;
   height:34px;
@@ -65,48 +60,66 @@ input,select{
 .mt10{margin-top:10px;}
 
 /* TABLE */
-table{width:100%;border-collapse:collapse;margin-top:12px;}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:12px;
+  table-layout:fixed;
+}
 th{
   background:#2f36b3;
   color:#fff;
   padding:6px;
   font-size:13px;
+  height:30px;
 }
 td{
   border:1px solid #ccc;
-  padding:4px;
-  font-size:13px;
+  padding:3px 4px;
+  font-size:12px;
 }
 td input{
-  height:26px;
+  height:22px;
   border:none;
-  padding:0 6px;
+  font-size:12px;
 }
 
-/* TOTALS */
+/* 🔒 EXACT 13 ROWS */
+#items tbody tr{
+  height:30px;
+}
+
+/* TOTALS BOX */
 .totals{
+  width:380px;
+  background:#fff8f0;
   border:2px solid #d4af37;
   padding:12px;
   border-radius:10px;
-  margin-top:16px;
-  float:right;       /* float right */
-  width:380px;       /* fixed width to align neatly */
-  background:#fff8f0;
+
+  position:absolute;        /* 🔒 KEY FIX */
+  right:12px;
+  bottom:14mm;              /* 🔒 NEVER SPLITS */
 }
+
 .row{
   display:flex;
   justify-content:space-between;
-  align-items:center;
   margin:6px 0;
 }
 .right{display:flex;gap:6px;}
 .right input,.right select{width:90px;}
 .grand{font-size:17px;font-weight:600;color:#2f36b3;}
-.words{font-style:italic;margin-top:6px;color:#333;}
+.words{
+  font-style:italic;
+  min-height:32px;
+  max-height:32px;
+  overflow:hidden;
+}
 
-/* BUTTONS */
-.actions{margin-top:18px;clear:both;}
-.actions button{
+/* ACTIONS */
+.actions{margin-top:12px;}
+button{
   background:#2f36b3;
   color:#fff;
   border:none;
@@ -114,152 +127,21 @@ td input{
   border-radius:6px;
   cursor:pointer;
 }
-.no-print{}
 
 /* PRINT */
 @media print{
   .no-print{display:none!important;}
   .invoice{border:none;}
 }
-  /* ===== FORCE 13 ITEMS PER A4 PAGE ===== */
 
-/* A4 exact size */
+/* PAGE */
 @page{
-  size: A4;
-  margin: 10mm;
+  size:A4;
+  margin:10mm;
 }
 
-/* Lock table layout */
-table{
-  table-layout: fixed;
-}
-
-/* Header height */
-th{
-  height: 30px;
-}
-
-/* 🔒 FIXED ROW HEIGHT – 13 ROWS FIT */
-#items tbody tr{
-  height: 30px;          /* DO NOT CHANGE */
-}
-
-/* Cell padding reduced */
-#items td{
-  padding: 3px 4px;
-  font-size: 12px;
-}
-
-/* Inputs compact */
-#items td input{
-  height: 22px;
-  font-size: 12px;
-}
-
-/* Prevent breaking rows or totals */
-tr, td, th{
-  page-break-inside: avoid !important;
-}
-
-/* Prevent totals splitting */
-.totals{
-  page-break-inside: avoid;
-}
-
-/* Hide overflow beyond one page */
-.invoice{
-  overflow: hidden;
-}/* ===== FORCE 13 ITEMS PER A4 PAGE ===== */
-
-/* A4 exact size */
-@page{
-  size: A4;
-  margin: 10mm;
-}
-
-/* Lock table layout */
-table{
-  table-layout: fixed;
-}
-
-/* Header height */
-th{
-  height: 30px;
-}
-
-/* 🔒 FIXED ROW HEIGHT – 13 ROWS FIT */
-#items tbody tr{
-  height: 30px;          /* DO NOT CHANGE */
-}
-
-/* Cell padding reduced */
-#items td{
-  padding: 3px 4px;
-  font-size: 12px;
-}
-
-/* Inputs compact */
-#items td input{
-  height: 22px;
-  font-size: 12px;
-}
-
-/* Prevent breaking rows or totals */
-tr, td, th{
-  page-break-inside: avoid !important;
-}
-
-/* Prevent totals splitting */
-.totals{
-  page-break-inside: avoid;
-}
-
-/* Hide overflow beyond one page */
-.invoice{
-  overflow: hidden;
-}
-  /* ===== FIX TOTALS MOVING DOWN WHEN WORDS INCREASE ===== */
-
-/* Lock totals box height */
-.totals{
-  height: 205px;              /* 🔒 fixed height */
-  box-sizing: border-box;
-}
-
-/* Lock words area height */
-.words{
-  min-height: 32px;           /* space for long text */
-  max-height: 32px;
-  overflow: hidden;           /* prevent expansion */
-  line-height: 16px;
-}
-
-/* Prevent totals from shifting pages */
-.totals{
-  page-break-inside: avoid;
-}
-  /* ===== FIX TOTAL BOX JUMPING TO NEXT PAGE ===== */
-
-/* Make invoice a positioning context */
-.invoice{
-  position: relative;
-}
-
-/* Normal screen view stays same */
-.totals{
-  float: right;
-}
-
-/* 🔒 PRINT / PDF FIX */
-@media print{
-  .totals{
-    float: none !important;
-    position: absolute;
-    right: 12px;
-    bottom: 14mm;       /* locks totals on page */
-    width: 380px;
-    page-break-inside: avoid;
-  }
+tr,td,th{
+  page-break-inside:avoid!important;
 }
 </style>
 </head>
@@ -307,7 +189,6 @@ tr, td, th{
 <div class="totals">
   <div class="row"><span>Subtotal</span><span id="sub">₹0.00</span></div>
 
-  <!-- DISCOUNT -->
   <div class="row" id="discountRow">
     <span>Discount</span>
     <span class="right">
@@ -364,8 +245,7 @@ function addRow(){
 
 function numToWords(n){
   const a=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten",
-           "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen",
-           "Eighteen","Nineteen"];
+  "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
   const b=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
   if(n<20) return a[n];
   if(n<100) return b[Math.floor(n/10)]+" "+a[n%10];
@@ -388,36 +268,30 @@ function calc(){
 
   sub.innerText="₹"+subtotal.toFixed(2);
 
-  let d = +disc.value || 0;
-  let discount = discType.value=="%" ? subtotal*d/100 : d;
+  let d=+disc.value||0;
+  let discount=discType.value=="%"?subtotal*d/100:d;
 
-  discountRow.style.display="flex"; // always show
-
-  let base = gstBase.value=="discount" ? subtotal-discount : subtotal;
-  let gstAmt = base*(+gst.value/100);
+  let base=gstBase.value=="discount"?subtotal-discount:subtotal;
+  let gstAmt=base*(+gst.value/100);
 
   cgst.innerText="₹"+(gstAmt/2).toFixed(2);
   sgst.innerText="₹"+(gstAmt/2).toFixed(2);
 
-  let total = base + gstAmt;
+  let total=base+gstAmt;
   grand.innerText="₹"+total.toFixed(2);
   words.innerText="Amount in words: "+numToWords(Math.round(total))+" Rupees Only";
 }
 
 function downloadPDF(){
-  const invoice = document.getElementById("invoice");
-  const buttons = document.querySelectorAll(".no-print");
-
-  buttons.forEach(e=>e.style.display="none");
-
+  document.querySelectorAll(".no-print").forEach(e=>e.style.display="none");
   setTimeout(()=>{
     html2pdf().set({
-      margin:[8,8,8,8],
       filename:'Invoice.pdf',
-      html2canvas:{scale:2,useCORS:true,logging:true},
-      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
-    }).from(invoice).save()
-    .then(()=> buttons.forEach(e=>e.style.display=""));
+      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+      html2canvas:{scale:2,useCORS:true}
+    }).from(invoice).save().then(()=>{
+      document.querySelectorAll(".no-print").forEach(e=>e.style.display="");
+    });
   },200);
 }
 
@@ -426,13 +300,3 @@ addRow();
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
