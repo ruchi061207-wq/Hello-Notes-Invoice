@@ -29,12 +29,22 @@ body{
 /* HEADER */
 .header{
   display:flex;
-  align-items:center;
+  align-items:stretch;  /* logo and text same height */
   justify-content:center;
   gap:14px;
 }
-.logo{width:64px;height:64px;display:flex;align-items:center;}
-.logo img{max-width:100%;max-height:100%;object-fit:contain;}
+.logo{
+  display:flex;
+  align-items:center;
+  /* Set height same as header text */
+  height:auto; /* optional, can remove fixed height */
+}
+.logo img{
+  height:100%;         /* makes logo fill height of parent */
+  max-width:120px;     /* prevents it from being too wide */
+  object-fit:contain;  /* keeps aspect ratio */
+}
+
 .header-text{text-align:center;}
 .header-text h1{margin:0;color:#2f36b3;}
 .header-text p{margin:2px 0;font-size:13px;color:#333;}
@@ -276,3 +286,4 @@ addRow();
 
 </body>
 </html>
+
