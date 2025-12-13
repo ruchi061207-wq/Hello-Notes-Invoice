@@ -59,12 +59,17 @@ body{
     background:#2f36b3;
     margin:15px 0;
 }
-label{font-size:14px}
+label{font-size:14px;
+    display:inline-block;
+    line-height:1.2;
+}
+
 input,select{
     width:100%;
     padding:8px;
     border:1px solid #aaa;
     border-radius:5px;
+    line-height:1.15;   /* 🔑 improves baseline for PDF */
 }
 .grid2{
     display:grid;
@@ -137,6 +142,28 @@ td input{
 @media print{
     .no-print{display:none!important}
     body{background:#fff;padding:0}
+}
+    /* ================= PRINT & PDF FIX ================= */
+@media print {
+
+  input,
+  select {
+    height: 36px !important;
+    padding: 4px 10px 6px !important; /* ⬆ lifts text up */
+    line-height: 1.1 !important;
+  }
+
+  td input {
+    height: 28px !important;
+    padding: 2px 6px !important;
+    line-height: 1.1 !important;
+  }
+
+  .totals input,
+  .totals select {
+    height: 32px !important;
+    padding: 4px 8px !important;
+  }
 }
 </style>
 </head>
@@ -346,3 +373,4 @@ calc();
 
 </body>
 </html>
+
