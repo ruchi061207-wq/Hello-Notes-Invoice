@@ -121,6 +121,103 @@ td input{
   .no-print{display:none!important;}
   .invoice{border:none;}
 }
+  /* ===== FORCE 13 ITEMS PER A4 PAGE ===== */
+
+/* A4 exact size */
+@page{
+  size: A4;
+  margin: 10mm;
+}
+
+/* Lock table layout */
+table{
+  table-layout: fixed;
+}
+
+/* Header height */
+th{
+  height: 30px;
+}
+
+/* 🔒 FIXED ROW HEIGHT – 13 ROWS FIT */
+#items tbody tr{
+  height: 30px;          /* DO NOT CHANGE */
+}
+
+/* Cell padding reduced */
+#items td{
+  padding: 3px 4px;
+  font-size: 12px;
+}
+
+/* Inputs compact */
+#items td input{
+  height: 22px;
+  font-size: 12px;
+}
+
+/* Prevent breaking rows or totals */
+tr, td, th{
+  page-break-inside: avoid !important;
+}
+
+/* Prevent totals splitting */
+.totals{
+  page-break-inside: avoid;
+}
+
+/* Hide overflow beyond one page */
+.invoice{
+  overflow: hidden;
+}/* ===== FORCE 13 ITEMS PER A4 PAGE ===== */
+
+/* A4 exact size */
+@page{
+  size: A4;
+  margin: 10mm;
+}
+
+/* Lock table layout */
+table{
+  table-layout: fixed;
+}
+
+/* Header height */
+th{
+  height: 30px;
+}
+
+/* 🔒 FIXED ROW HEIGHT – 13 ROWS FIT */
+#items tbody tr{
+  height: 30px;          /* DO NOT CHANGE */
+}
+
+/* Cell padding reduced */
+#items td{
+  padding: 3px 4px;
+  font-size: 12px;
+}
+
+/* Inputs compact */
+#items td input{
+  height: 22px;
+  font-size: 12px;
+}
+
+/* Prevent breaking rows or totals */
+tr, td, th{
+  page-break-inside: avoid !important;
+}
+
+/* Prevent totals splitting */
+.totals{
+  page-break-inside: avoid;
+}
+
+/* Hide overflow beyond one page */
+.invoice{
+  overflow: hidden;
+}
 </style>
 </head>
 
@@ -286,6 +383,7 @@ addRow();
 
 </body>
 </html>
+
 
 
 
