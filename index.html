@@ -8,107 +8,114 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-*{box-sizing:border-box;}
 body{
-  font-family:Poppins,sans-serif;
-  background:#eef3fb;
-  margin:0;
-  padding:12px;
+  font-family:'Poppins', sans-serif;
+  background:#f5f7fb;
 }
 
-/* A4 container */
 .invoice{
-  width:190mm;
-  height:277mm;              /* 🔒 FIXED A4 HEIGHT */
+  width:800px;
   margin:auto;
   background:#fff;
-  padding:12px;
-  border:1px solid #d4af37;
+  padding:20px;
   border-radius:8px;
-  position:relative;        /* anchor totals */
-  overflow:hidden;          /* prevent page spill */
 }
 
-/* HEADER */
-.header{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:14px;
-}
-.logo img{
-  max-width:120px;
-  object-fit:contain;
-}
-.header-text{text-align:center;}
-.header-text h1{margin:0;color:#2f36b3;}
-.header-text p{margin:2px 0;font-size:13px;}
+/* ================= FIX START ================= */
 
-.line{height:4px;background:#2f36b3;margin:12px 0;}
-
-/* FORM */
-label{font-size:13px;display:block;margin-bottom:4px;}
-input,select{
-  width:100%;
-  height:34px;
-  padding:4px 8px;
-  border:1px solid #aaa;
-  border-radius:5px;
-  font-size:13px;
-}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.mt10{margin-top:10px;}
-
-/* TABLE */
-table{
+.items-table{
   width:100%;
   border-collapse:collapse;
-  margin-top:12px;
-  table-layout:fixed;
+  margin-bottom:260px; /* IMPORTANT */
 }
-th{
-  background:#2f36b3;
-  color:#fff;
-  padding:6px;
-  font-size:13px;
-  height:30px;
-}
-td{
+
+.items-table th, .items-table td{
   border:1px solid #ccc;
-  padding:3px 4px;
-  font-size:12px;
-}
-td input{
-  height:22px;
-  border:none;
-  font-size:12px;
+  padding:8px;
+  text-align:center;
 }
 
-/* 🔒 EXACT 13 ROWS */
-#items tbody tr{
-  height:30px;
+.total-box{
+  width:300px;
+  float:right;
+  clear:both;
+  position:relative;
+  margin-top:20px;
+  border:2px solid #e3c97a;
+  padding:15px;
+  background:#fff7ec;
+  page-break-inside:avoid;
 }
 
-/* TOTALS BOX */
-.totals{
-  width:380px;
-  background:#fff8f0;
-  border:2px solid #d4af37;
-  padding:12px;
-  border-radius:10px;
-
-  position:absolute;        /* 🔒 KEY FIX */
-  right:12px;
-  bottom:14mm;              /* 🔒 NEVER SPLITS */
+table, tr, td{
+  page-break-inside:avoid !important;
 }
 
-.row{
-  display:flex;
-  justify-content:space-between;
-  margin:6px 0;
+/* ================= FIX END ================= */
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
 }
-.right{display:flex;gap:6px;}
-.right input,.right select{width:90px;}
+
+.header h1{
+  margin:0;
+  color:#2d3fa4;
+}
+</style>
+</head>
+
+<body>
+
+<div class="invoice" id="invoice">
+
+  <div class="header">
+    <h1>Hello Notes</h1>
+    <div>GST: 29AFQFS5154Q1ZU</div>
+    <div>No.6 Kurubarahalli Main Road, Kirloskar Layout</div>
+    <div>Bengaluru – 570079 | Phone: 8073431538</div>
+  </div>
+
+  <table class="items-table">
+    <thead>
+      <tr style="background:#2d3fa4;color:#fff;">
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Rate</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- EXISTING ROW LOGIC UNTOUCHED -->
+      <tr><td>A</td><td>10</td><td>500</td><td>5000.00</td></tr>
+      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
+      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
+      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
+      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
+      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
+      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
+      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
+      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
+      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
+    </tbody>
+  </table>
+
+  <div class="total-box">
+    <div>Subtotal: ₹5000.00</div>
+    <div>Discount: 0%</div>
+    <div>GST 9%</div>
+    <div>CGST: ₹225.00</div>
+    <div>SGST: ₹225.00</div>
+    <strong>Grand Total: ₹5450.00</strong>
+    <div style="margin-top:10px;font-size:13px;">
+      Amount in words: Five Thousand Four Hundred Fifty Only
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>.right input,.right select{width:90px;}
 .grand{font-size:17px;font-weight:600;color:#2f36b3;}
 .words{
   font-style:italic;
@@ -327,4 +334,5 @@ addRow();
 
 </body>
 </html>
+
 
