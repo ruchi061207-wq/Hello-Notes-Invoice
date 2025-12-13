@@ -218,6 +218,26 @@ tr, td, th{
 .invoice{
   overflow: hidden;
 }
+  /* ===== FIX TOTALS MOVING DOWN WHEN WORDS INCREASE ===== */
+
+/* Lock totals box height */
+.totals{
+  height: 205px;              /* 🔒 fixed height */
+  box-sizing: border-box;
+}
+
+/* Lock words area height */
+.words{
+  min-height: 32px;           /* space for long text */
+  max-height: 32px;
+  overflow: hidden;           /* prevent expansion */
+  line-height: 16px;
+}
+
+/* Prevent totals from shifting pages */
+.totals{
+  page-break-inside: avoid;
+}
 </style>
 </head>
 
@@ -383,6 +403,7 @@ addRow();
 
 </body>
 </html>
+
 
 
 
