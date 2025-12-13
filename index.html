@@ -96,9 +96,13 @@ td input{
 }
   
 .company-name{
-  color:#1f3fa3;       /* Blue */
-  font-weight:600;
-  font-size:18px;
+  color:#1f3fa3;            /* Blue text */
+  font-weight:700;           /* Bold */
+  font-size:20px;            /* Slightly bigger */
+  background: linear-gradient(to right, #fff7e0 0%, #fff7e0 100%); /* soft highlight */
+  padding:2px 4px;
+  border-bottom: 3px solid #c9b037;  /* Gold underline */
+  text-align:center;
 }
   
 /* BUTTONS */
@@ -127,7 +131,7 @@ button{
 <!-- HEADER -->
 <div class="header">
 <img id="logoPreview" src="LOGO.jpg">>
-<input value="Hello Notes" class="company-name">
+<input value="Hello Notes" class="company-name" readonly>
 <input value="GST: 29AFQFS154Q1ZU">
 <input value="No.6 Kurubarahalli Main Road, Kirloskar Layout, Bengaluru – 570079">
 <input value="Phone: 8073431538">
@@ -286,6 +290,7 @@ calc();
 
 </body>
 </html>
+
 
 
 
