@@ -126,6 +126,21 @@ button{
         padding: 2px 4px;
     }
   }
+  
+  .remove-row{
+  background:#c70000;
+  color:#fff;
+  border:none;
+  padding:2px 6px;
+  margin-left:4px;
+  cursor:pointer;
+  border-radius:3px;
+  font-size:12px;
+}
+.remove-row:hover{
+  background:#ff1a1a;
+}
+  
 </style>
 </head>
 
@@ -242,9 +257,16 @@ const r=t.insertRow();
 r.innerHTML=`<td><input></td>
 <td><input type="number" value="1" oninput="calc()"></td>
 <td><input type="number" value="0" oninput="calc()"></td>
-<td><input readonly></td>`;
+<td><input readonly> <button-type="button" class="remove-row" onclick="removeRow(this)">✖</button>
+  </td>`;
 }
-
+  
+function removeRow(btn){
+  const row = btn.closest("tr");
+  row.remove();
+  calc();
+}
+  
 for(let i=0;i<13;i++) addRow();
 
 function calc(){
@@ -295,6 +317,7 @@ calc();
 
 </body>
 </html>
+
 
 
 
