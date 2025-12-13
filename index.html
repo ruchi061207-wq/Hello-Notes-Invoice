@@ -117,10 +117,15 @@ button{
 .no-print{display:block;}
 .footer-actions{margin-top:15px;display:flex;gap:10px;}
 
-@media print{
-  .no-print{display:none!important;}
-  input,select{border:none;}
-}
+@media print {
+    input, select {
+        border: 1px solid #000 !important; /* show box */
+        background: #fff !important;       /* white background */
+        -webkit-print-color-adjust: exact; /* ensure colors print */
+        color: #000 !important;
+        padding: 2px 4px;
+    }
+  }
 </style>
 </head>
 
@@ -290,6 +295,7 @@ calc();
 
 </body>
 </html>
+
 
 
 
