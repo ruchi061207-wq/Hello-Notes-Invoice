@@ -10,132 +10,106 @@
 <style>
 *{box-sizing:border-box;}
 body{
-    font-family:'Poppins',sans-serif;
-    background:#f2f4f8;
-    padding:20px;
+  font-family:'Poppins',sans-serif;
+  background:#eef1f7;
+  padding:20px;
 }
 .invoice{
-    width:800px;
-    margin:auto;
-    background:#fff;
-    padding:25px;
+  width:800px;
+  margin:auto;
+  background:#fff;
+  padding:25px;
+  border-top:6px solid #1f3fa3;
 }
 
 /* HEADER */
 .header{
-    text-align:center;
+  text-align:center;
 }
 .header img{
-    height:60px;
-    display:block;
-    margin:auto;
+  height:60px;
+  margin:auto;
 }
-.header h2{
-    margin:5px 0;
-    color:#2c2f8f;
-}
-.header small{
-    font-size:12px;
+.header input{
+  border:none;
+  text-align:center;
+  width:100%;
+  font-size:12px;
 }
 
 /* LABEL FIELD */
-.field{
-    display:flex;
-    flex-direction:column;
-}
-.field label{
-    font-size:11px;
-    color:#555;
-    margin-bottom:2px;
-}
+.field{display:flex;flex-direction:column;}
+.field label{font-size:11px;color:#444;margin-bottom:2px;}
 
-/* TOP FIELDS */
+/* TOP */
 .top-fields{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-    margin-top:15px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:15px;
 }
-.top-fields input{
-    padding:6px;
-    width:100%;
-}
+.top-fields input{padding:6px;width:100%;}
 
 /* TABLE */
 table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
-    font-size:13px;
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  font-size:13px;
 }
 th,td{
-    border:1px solid #ccc;
-    padding:6px;
-    text-align:center;
+  border:1px solid #ccc;
+  padding:6px;
+  text-align:center;
 }
-th{background:#f3f5ff;}
+th{background:#f1f4ff;}
 td input{
-    width:100%;
-    border:none;
-    text-align:center;
-}
-
-/* BUTTONS */
-.actions{
-    margin-top:10px;
-}
-button{
-    padding:6px 12px;
-    border:none;
-    background:#2c2f8f;
-    color:#fff;
-    border-radius:4px;
-    cursor:pointer;
+  width:100%;
+  border:none;
+  text-align:center;
 }
 
 /* TOTAL BOX */
 .total-box{
-    width:100%;
-    border:2px solid #c9b037;
-    margin-top:15px;
-    padding:12px;
-    font-size:13px;
+  border:2px solid #c9b037;
+  margin-top:15px;
+  padding:12px;
+  font-size:13px;
 }
 .total-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:6px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
 }
-.total-row input,
-.total-row select{
-    width:140px;
-    padding:4px;
+.total-row input,.total-row select{
+  width:140px;
+  padding:4px;
 }
-.grand{
-    font-weight:600;
-    font-size:15px;
-}
+.grand{font-weight:600;font-size:15px;color:#1f3fa3;}
 
 /* WORDS */
 .words-box{
-    border:1px solid #c9b037;
-    margin-top:10px;
-    padding:8px;
+  border:1px solid #c9b037;
+  margin-top:10px;
+  padding:8px;
 }
 
-.footer-actions{
-    margin-top:15px;
-    display:flex;
-    gap:10px;
+/* BUTTONS */
+button{
+  padding:6px 12px;
+  background:#1f3fa3;
+  color:#fff;
+  border:none;
+  border-radius:4px;
+  cursor:pointer;
 }
-
-/* HIDE IN PRINT / PDF */
 .no-print{display:block;}
+.footer-actions{margin-top:15px;display:flex;gap:10px;}
 
 @media print{
-    .no-print{display:none!important;}
-    input,select{border:none;}
+  .no-print{display:none!important;}
+  input,select{border:none;}
 }
 </style>
 </head>
@@ -146,34 +120,31 @@ button{
 
 <!-- HEADER -->
 <div class="header">
-<img src="LOGO.jpg" alt="Hello Notes Logo">
-<h2>Hello Notes</h2>
-<small>
-GST: 29AFQFS154Q1ZU<br>
-No.6 Kurubarahalli Main Road, Kirloskar Layout<br>
-Bengaluru – 570079 | Phone: 8073431538
-</small>
+<img id="logoPreview">
+<input type="file" class="no-print" accept="image/*" onchange="loadLogo(event)">
+<input value="Hello Notes">
+<input value="GST: 29AFQFS154Q1ZU">
+<input value="No.6 Kurubarahalli Main Road, Kirloskar Layout, Bengaluru – 570079">
+<input value="Phone: 8073431538">
 </div>
 
-<!-- TOP FIELDS WITH LABELS -->
+<!-- TOP -->
 <div class="top-fields">
 <div class="field">
 <label>Invoice Number</label>
-<input placeholder="Invoice Number">
+<input>
 </div>
-
 <div class="field">
 <label>Invoice Date</label>
 <input type="date">
 </div>
-
 <div class="field" style="grid-column:1/3">
 <label>Customer Name</label>
-<input placeholder="Customer Name">
+<input>
 </div>
 </div>
 
-<!-- ITEMS TABLE -->
+<!-- TABLE -->
 <table id="itemsTable">
 <thead>
 <tr>
@@ -186,7 +157,7 @@ Bengaluru – 570079 | Phone: 8073431538
 <tbody></tbody>
 </table>
 
-<div class="actions no-print">
+<div class="no-print">
 <button onclick="addRow()">+ Add Item</button>
 </div>
 
@@ -208,16 +179,16 @@ Bengaluru – 570079 | Phone: 8073431538
 </div>
 
 <div class="total-row">
-<span>GST Base</span>
+<span>GST Based On</span>
 <select id="gstBase" onchange="calc()">
-<option value="subtotal">On Subtotal</option>
+<option value="subtotal">Subtotal</option>
 <option value="afterDiscount">After Discount</option>
 </select>
 </div>
 
 <div class="total-row">
 <span>GST %</span>
-<input type="number" id="gst" value="9" oninput="calc()">
+<input type="number" id="gst" value="18" oninput="calc()">
 </div>
 
 <div class="total-row">
@@ -250,11 +221,14 @@ Bengaluru – 570079 | Phone: 8073431538
 </div>
 
 <script>
+function loadLogo(e){
+  logoPreview.src=URL.createObjectURL(e.target.files[0]);
+}
+
 function addRow(){
-const tbody=document.querySelector("#itemsTable tbody");
-const row=tbody.insertRow();
-row.innerHTML=`
-<td><input></td>
+const t=document.querySelector("#itemsTable tbody");
+const r=t.insertRow();
+r.innerHTML=`<td><input></td>
 <td><input type="number" value="1" oninput="calc()"></td>
 <td><input type="number" value="0" oninput="calc()"></td>
 <td><input readonly></td>`;
@@ -276,15 +250,14 @@ subtotalEl.innerText=subtotal.toFixed(2);
 let d=+discount.value;
 let discAmt=(discountType.value=="%")?(subtotal*d/100):d;
 let base=(gstBase.value=="afterDiscount")?(subtotal-discAmt):subtotal;
-
 let gstAmt=base*(+gst.value/100);
-let cg=gstAmt/2, sg=gstAmt/2;
-let grandTotal=(subtotal-discAmt)+gstAmt;
 
-cgst.innerText=cg.toFixed(2);
-sgst.innerText=sg.toFixed(2);
-grand.innerText=grandTotal.toFixed(2);
-words.innerText=numToWords(Math.round(grandTotal))+" Only";
+cgst.innerText=(gstAmt/2).toFixed(2);
+sgst.innerText=(gstAmt/2).toFixed(2);
+
+let g=(subtotal-discAmt)+gstAmt;
+grand.innerText=g.toFixed(2);
+words.innerText=numToWords(Math.round(g))+" Only";
 }
 
 const subtotalEl=subtotal;
@@ -310,100 +283,4 @@ calc();
 </script>
 
 </body>
-</html>  body{background:#fff;}
-}
-</style>
-</head>
-
-<body>
-
-<div class="invoice" id="invoice">
-
-  <!-- HEADER -->
-  <div class="header">
-    <img src="" id="logo">
-    <h2>INVOICE</h2>
-  </div>
-
-  <!-- INFO -->
-  <div class="info">
-    <div class="field">
-      <label>Customer Name</label>
-      <input type="text" placeholder="Enter Customer Name">
-    </div>
-
-    <div class="field">
-      <label>Invoice Number</label>
-      <input type="text" placeholder="INV-001">
-    </div>
-
-    <div class="field">
-      <label>Invoice Date</label>
-      <input type="date">
-    </div>
-  </div>
-
-  <!-- TABLE -->
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Item Name</th>
-        <th>Qty</th>
-        <th>Rate</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody id="items">
-      <tr>
-        <td>1</td>
-        <td><input></td>
-        <td><input type="number" value="1"></td>
-        <td><input type="number" value="0"></td>
-        <td>0.00</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- TOTAL -->
-  <div class="total-box">
-    <div><span>Subtotal</span><span id="sub">0.00</span></div>
-    <div><span>Discount</span><span id="disc">0.00</span></div>
-    <div><span>GST</span><span id="gst">0.00</span></div>
-    <div><strong>Grand Total</strong><strong id="grand">0.00</strong></div>
-  </div>
-
-  <div style="clear:both"></div>
-
-  <!-- ACTION BUTTONS -->
-  <div class="actions no-print">
-    <button onclick="addRow()">Add Item</button>
-    <button onclick="window.print()">Print</button>
-    <button onclick="downloadPDF()">Download PDF</button>
-  </div>
-
-</div>
-
-<script>
-function addRow(){
-  let t=document.getElementById("items");
-  let r=t.rows.length+1;
-  let row=t.insertRow();
-  row.innerHTML=`<td>${r}</td>
-    <td><input></td>
-    <td><input type="number" value="1"></td>
-    <td><input type="number" value="0"></td>
-    <td>0.00</td>`;
-}
-
-function downloadPDF(){
-  document.querySelectorAll('.no-print').forEach(e=>e.style.display='none');
-  html2pdf().from(document.getElementById('invoice')).save().then(()=>{
-    document.querySelectorAll('.no-print').forEach(e=>e.style.display='inline-block');
-  });
-}
-</script>
-
-</body>
 </html>
-
