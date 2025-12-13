@@ -2,65 +2,111 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Invoice – Hello Notes</title>
+<title>Hello Notes Invoice</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
+*{ box-sizing:border-box; font-family:Poppins,sans-serif; }
+
 body{
-  font-family:'Poppins', sans-serif;
-  background:#f5f7fb;
+  background:#f0f4ff;
+  margin:0;
+  padding:10px;
 }
 
 .invoice{
-  width:800px;
-  margin:auto;
+  width:794px;
+  height:1123px;              /* A4 fixed */
   background:#fff;
+  margin:auto;
   padding:20px;
-  border-radius:8px;
+  position:relative;
+  overflow:hidden;            /* 🔑 PREVENT PUSH */
 }
 
-/* ================= FIX START ================= */
+/* HEADER */
+.header{text-align:center;}
+.header h2{margin:0;color:#1f3b82;}
+.header p{margin:3px 0;font-size:12px;}
 
-.items-table{
+/* TABLE */
+table{
   width:100%;
   border-collapse:collapse;
-  margin-bottom:260px; /* IMPORTANT */
+  margin-top:15px;
 }
 
-.items-table th, .items-table td{
-  border:1px solid #ccc;
-  padding:8px;
+thead th{
+  background:#2b3fa0;
+  color:#fff;
+  padding:6px;
+  font-size:13px;
+}
+
+tbody tr{
+  height:32px;               /* 🔑 LOCK ROW HEIGHT */
+}
+
+tbody td{
+  border:1px solid #ddd;
+  padding:6px;
+  font-size:12px;
+  vertical-align:middle;
+}
+
+/* LOCK TO 13 ROWS */
+tbody tr:nth-child(n+14){
+  display:none;
+}
+
+/* TOTALS BOX */
+.totals{
+  position:absolute;
+  right:20px;
+  bottom:90px;
+  width:260px;
+  border:1px solid #d8c690;
+  background:#fff8dc;
+  padding:10px;
+  font-size:12px;
+}
+
+.totals div{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:4px;
+}
+
+.totals .grand{
+  font-weight:600;
+  border-top:1px solid #999;
+  padding-top:5px;
+}
+
+/* AMOUNT IN WORDS */
+.amount-words{
+  position:absolute;
+  left:20px;
+  bottom:90px;
+  width:480px;
+  font-size:12px;
+}
+
+/* FOOTER */
+.footer{
+  position:absolute;
+  bottom:20px;
+  width:100%;
   text-align:center;
+  font-size:11px;
 }
 
-.total-box{
-  width:300px;
-  float:right;
-  clear:both;
-  position:relative;
-  margin-top:20px;
-  border:2px solid #e3c97a;
-  padding:15px;
-  background:#fff7ec;
-  page-break-inside:avoid;
-}
-
-table, tr, td{
-  page-break-inside:avoid !important;
-}
-
-/* ================= FIX END ================= */
-
-.header{
-  text-align:center;
-  margin-bottom:20px;
-}
-
-.header h1{
-  margin:0;
-  color:#2d3fa4;
+/* PRINT */
+@media print{
+  body{background:#fff;}
+  .invoice{margin:0;page-break-after:avoid;}
 }
 </style>
 </head>
@@ -70,47 +116,46 @@ table, tr, td{
 <div class="invoice" id="invoice">
 
   <div class="header">
-    <h1>Hello Notes</h1>
-    <div>GST: 29AFQFS5154Q1ZU</div>
-    <div>No.6 Kurubarahalli Main Road, Kirloskar Layout</div>
-    <div>Bengaluru – 570079 | Phone: 8073431538</div>
+    <h2>Hello Notes</h2>
+    <p>GST: 29AFQFS5154Q1ZU</p>
+    <p>No.6 Kurubarahalli Main Road, Kirloskar Layout</p>
+    <p>Bengaluru – 570079 | Phone: 8073431538</p>
   </div>
 
-  <table class="items-table">
+  <table>
     <thead>
-      <tr style="background:#2d3fa4;color:#fff;">
-        <th>Item</th>
-        <th>Qty</th>
-        <th>Rate</th>
-        <th>Total</th>
+      <tr>
+        <th width="40%">Item</th>
+        <th width="15%">Qty</th>
+        <th width="20%">Rate</th>
+        <th width="25%">Total</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- EXISTING ROW LOGIC UNTOUCHED -->
-      <tr><td>A</td><td>10</td><td>500</td><td>5000.00</td></tr>
-      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
-      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
-      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
-      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
-      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
-      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
-      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
-      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
-      <tr><td></td><td>1</td><td>0</td><td>0.00</td></tr>
+    <tbody id="items">
+      <!-- YOUR EXISTING INPUT ROWS – LOGIC SAME -->
+      <tr>
+        <td><input></td>
+        <td><input></td>
+        <td><input></td>
+        <td>0.00</td>
+      </tr>
+      <!-- Repeat / auto-generate as before (max 13 visible) -->
     </tbody>
   </table>
 
-  <div class="total-box">
-    <div>Subtotal: ₹5000.00</div>
-    <div>Discount: 0%</div>
-    <div>GST 9%</div>
-    <div>CGST: ₹225.00</div>
-    <div>SGST: ₹225.00</div>
-    <strong>Grand Total: ₹5450.00</strong>
-    <div style="margin-top:10px;font-size:13px;">
-      Amount in words: Five Thousand Four Hundred Fifty Only
-    </div>
+  <div class="amount-words">
+    Amount in words: <b id="words"></b>
   </div>
+
+  <div class="totals">
+    <div><span>Subtotal</span><span id="subtotal">₹0.00</span></div>
+    <div><span>Discount</span><span id="discount">₹0.00</span></div>
+    <div><span>CGST 9%</span><span id="cgst">₹0.00</span></div>
+    <div><span>SGST 9%</span><span id="sgst">₹0.00</span></div>
+    <div class="grand"><span>Grand Total</span><span id="grand">₹0.00</span></div>
+  </div>
+
+  <div class="footer">Thank you for your business</div>
 
 </div>
 
