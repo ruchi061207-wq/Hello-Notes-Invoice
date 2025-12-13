@@ -238,6 +238,29 @@ tr, td, th{
 .totals{
   page-break-inside: avoid;
 }
+  /* ===== FIX TOTAL BOX JUMPING TO NEXT PAGE ===== */
+
+/* Make invoice a positioning context */
+.invoice{
+  position: relative;
+}
+
+/* Normal screen view stays same */
+.totals{
+  float: right;
+}
+
+/* 🔒 PRINT / PDF FIX */
+@media print{
+  .totals{
+    float: none !important;
+    position: absolute;
+    right: 12px;
+    bottom: 14mm;       /* locks totals on page */
+    width: 380px;
+    page-break-inside: avoid;
+  }
+}
 </style>
 </head>
 
@@ -403,6 +426,7 @@ addRow();
 
 </body>
 </html>
+
 
 
 
