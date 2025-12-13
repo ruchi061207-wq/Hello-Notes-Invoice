@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Invoice – Hello Notes</title>
+<title>Hello Notes Invoice</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -15,8 +15,8 @@ body{
 }
 .invoice{
     width:800px;
-    background:#fff;
     margin:auto;
+    background:#fff;
     padding:25px;
 }
 .header{
@@ -28,14 +28,12 @@ body{
 }
 .header small{
     font-size:12px;
-    color:#444;
 }
 
-/* TABLE */
 table{
     width:100%;
     border-collapse:collapse;
-    margin-top:20px;
+    margin-top:15px;
     font-size:13px;
 }
 th,td{
@@ -43,72 +41,173 @@ th,td{
     padding:6px;
     text-align:center;
 }
-th{
-    background:#f3f5ff;
+th{background:#f3f5ff;}
+
+input{
+    width:100%;
+    border:none;
+    text-align:center;
+    font-family:'Poppins';
 }
 
-/* TOTAL BOX – FIX */
-tfoot td{
-    border:1px solid #c9b037;
-    background:#fffdf5;
-    padding:8px;
+/* 🔥 TOTAL BOX FIX */
+.total-box{
+    width:100%;
+    border:2px solid #c9b037;
+    margin-top:15px;
+    padding:12px;
+    font-size:13px;
 }
-.total-label{
-    text-align:right;
-    font-weight:600;
+.total-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:6px;
 }
-.total-value{
+.total-row input{
+    width:120px;
     text-align:right;
-    font-weight:600;
+    border:1px solid #ccc;
+    padding:4px;
 }
 .grand{
+    font-weight:600;
     font-size:15px;
-    background:#fff3c4;
 }
 
-/* AMOUNT IN WORDS */
-.amount-words{
+/* Amount in words */
+.words-box{
+    margin-top:10px;
     border:1px solid #c9b037;
-    margin-top:15px;
-    padding:10px;
-    font-size:13px;
+    padding:8px;
 }
 </style>
 </head>
 
 <body>
+
 <div class="invoice">
 
-    <div class="header">
-        <h2>Hello Notes</h2>
-        <small>
-            GST: 29AFQFS154Q1ZU<br>
-            No.6 Kurubarahalli Main Road, Kirloskar Layout<br>
-            Bengaluru – 570079 | Phone: 8073431538
-        </small>
-    </div>
+<div class="header">
+    <h2>Hello Notes</h2>
+    <small>
+        GST: 29AFQFS154Q1ZU<br>
+        No.6 Kurubarahalli Main Road, Kirloskar Layout<br>
+        Bengaluru – 570079 | Phone: 8073431538
+    </small>
+</div>
 
-    <table>
-        <thead>
-            <tr>
-                <th style="width:40%">Item</th>
-                <th>Qty</th>
-                <th>Rate</th>
-                <th>Total</th>
-            </tr>
-        </thead>
+<table id="itemsTable">
+<thead>
+<tr>
+<th style="width:40%">Item</th>
+<th>Qty</th>
+<th>Rate</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<!-- 13 fixed rows -->
+<script>
+for(let i=0;i<13;i++){
+document.write(`
+<tr>
+<td><input></td>
+<td><input type="number" value="1" oninput="calc()"></td>
+<td><input type="number" value="0" oninput="calc()"></td>
+<td><input readonly></td>
+</tr>
+`);
+}
+</script>
+</tbody>
+</table>
 
-        <tbody>
-            <!-- YOUR EXISTING 13 ROWS – UNCHANGED -->
-            <tr><td>A</td><td>10</td><td>100</td><td>1000.00</td></tr>
-            <tr><td>B</td><td>5</td><td>75</td><td>375.00</td></tr>
-            <tr><td>C</td><td>8</td><td>120</td><td>960.00</td></tr>
-            <tr><td>D</td><td>15</td><td>45</td><td>675.00</td></tr>
-            <tr><td>E</td><td>1</td><td>0</td><td>0.00</td></tr>
-            <tr><td>F</td><td>1</td><td>0</td><td>0.00</td></tr>
-            <tr><td>G</td><td>1</td><td>0</td><td>0.00</td></tr>
-            <tr><td>H</td><td>1</td><td>0</td><td>0.00</td></tr>
-            <tr><td>I</td><td>1</td><td>0</td><td>0.00</td></tr>
+<!-- ✅ TOTALS START FROM LEFT UNDER TABLE -->
+<div class="total-box">
+
+<div class="total-row">
+<span>Subtotal</span>
+<span>₹ <span id="subtotal">0.00</span></span>
+</div>
+
+<div class="total-row">
+<span>Discount</span>
+<input type="number" id="discount" value="0" oninput="calc()">
+</div>
+
+<div class="total-row">
+<span>GST %</span>
+<input type="number" id="gst" value="9" oninput="calc()">
+</div>
+
+<div class="total-row">
+<span>CGST</span>
+<span>₹ <span id="cgst">0.00</span></span>
+</div>
+
+<div class="total-row">
+<span>SGST</span>
+<span>₹ <span id="sgst">0.00</span></span>
+</div>
+
+<div class="total-row grand">
+<span>Grand Total</span>
+<span>₹ <span id="grand">0.00</span></span>
+</div>
+
+</div>
+
+<div class="words-box">
+<strong>Amount in words:</strong><br>
+<span id="words"></span>
+</div>
+
+</div>
+
+<script>
+function calc(){
+let rows=document.querySelectorAll("#itemsTable tbody tr");
+let subtotal=0;
+
+rows.forEach(r=>{
+let q=Number(r.cells[1].children[0].value);
+let rate=Number(r.cells[2].children[0].value);
+let t=q*rate;
+r.cells[3].children[0].value=t.toFixed(2);
+subtotal+=t;
+});
+
+document.getElementById("subtotal").innerText=subtotal.toFixed(2);
+
+let disc=Number(document.getElementById("discount").value);
+let gstp=Number(document.getElementById("gst").value);
+
+let afterDisc=subtotal-disc;
+let gstAmt=afterDisc*(gstp/100);
+let cgst=gstAmt/2;
+let sgst=gstAmt/2;
+let grand=afterDisc+gstAmt;
+
+document.getElementById("cgst").innerText=cgst.toFixed(2);
+document.getElementById("sgst").innerText=sgst.toFixed(2);
+document.getElementById("grand").innerText=grand.toFixed(2);
+document.getElementById("words").innerText=numberToWords(Math.round(grand))+" Only";
+}
+
+function numberToWords(n){
+const a=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+const b=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+if(n<20)return a[n];
+if(n<100)return b[Math.floor(n/10)]+" "+a[n%10];
+if(n<1000)return a[Math.floor(n/100)]+" Hundred "+numberToWords(n%100);
+if(n<100000)return numberToWords(Math.floor(n/1000))+" Thousand "+numberToWords(n%1000);
+return n;
+}
+calc();
+</script>
+
+</body>
+</html>            <tr><td>I</td><td>1</td><td>0</td><td>0.00</td></tr>
             <tr><td>J</td><td>1</td><td>0</td><td>0.00</td></tr>
             <tr><td>K</td><td>1</td><td>0</td><td>0.00</td></tr>
             <tr><td>L</td><td>1</td><td>0</td><td>0.00</td></tr>
@@ -150,3 +249,4 @@ tfoot td{
 </div>
 </body>
 </html>
+
