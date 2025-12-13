@@ -2,113 +2,291 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Hello Notes Invoice</title>
+<title>Invoice – Hello Notes</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-*{ box-sizing:border-box; font-family:Poppins,sans-serif; }
-
+*{box-sizing:border-box;}
 body{
-  background:#f0f4ff;
+  font-family:Poppins,sans-serif;
+  background:#eef3fb;
   margin:0;
-  padding:10px;
+  padding:12px;
 }
 
+/* ===== INVOICE ===== */
 .invoice{
-  width:794px;
-  height:1123px;              /* A4 fixed */
-  background:#fff;
+  width:190mm;
+  min-height:277mm;
   margin:auto;
-  padding:20px;
+  background:#fff;
+  padding:12px;
+  border:1px solid #d4af37;
+  border-radius:8px;
   position:relative;
-  overflow:hidden;            /* 🔑 PREVENT PUSH */
 }
 
-/* HEADER */
-.header{text-align:center;}
-.header h2{margin:0;color:#1f3b82;}
-.header p{margin:3px 0;font-size:12px;}
+/* ===== HEADER ===== */
+.header{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+}
+.logo img{
+  max-width:120px;
+  object-fit:contain;
+}
+.header-text{text-align:center;}
+.header-text h1{margin:0;color:#2f36b3;}
+.header-text p{margin:2px 0;font-size:13px;}
+.line{height:4px;background:#2f36b3;margin:12px 0;}
 
-/* TABLE */
+/* ===== FORM ===== */
+label{font-size:13px;}
+input,select{
+  width:100%;
+  height:34px;
+  padding:4px 8px;
+  border:1px solid #aaa;
+  border-radius:5px;
+  font-size:13px;
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.mt10{margin-top:10px;}
+
+/* ===== TABLE ===== */
 table{
   width:100%;
   border-collapse:collapse;
-  margin-top:15px;
+  table-layout:fixed;
 }
-
-thead th{
-  background:#2b3fa0;
+th{
+  background:#2f36b3;
   color:#fff;
-  padding:6px;
   font-size:13px;
+  height:30px;
 }
-
-tbody tr{
-  height:32px;               /* 🔑 LOCK ROW HEIGHT */
-}
-
-tbody td{
-  border:1px solid #ddd;
-  padding:6px;
+td{
+  border:1px solid #ccc;
   font-size:12px;
-  vertical-align:middle;
+  padding:3px 4px;
+}
+#items tbody tr{
+  height:30px;
+}
+td input{
+  height:22px;
+  font-size:12px;
+  border:none;
 }
 
-/* LOCK TO 13 ROWS */
-tbody tr:nth-child(n+14){
-  display:none;
-}
-
-/* TOTALS BOX */
+/* ===== TOTALS ===== */
 .totals{
-  position:absolute;
-  right:20px;
-  bottom:90px;
-  width:260px;
-  border:1px solid #d8c690;
-  background:#fff8dc;
-  padding:10px;
-  font-size:12px;
+  width:380px;
+  height:205px;
+  border:2px solid #d4af37;
+  border-radius:10px;
+  padding:12px;
+  background:#fff8f0;
+  float:right;
+  page-break-inside:avoid;
 }
-
-.totals div{
+.row{
   display:flex;
   justify-content:space-between;
-  margin-bottom:4px;
+  margin:6px 0;
+}
+.right{display:flex;gap:6px;}
+.right input,.right select{width:90px;}
+.grand{font-size:17px;font-weight:600;color:#2f36b3;}
+.words{
+  height:32px;
+  overflow:hidden;
+  font-style:italic;
+  line-height:16px;
 }
 
-.totals .grand{
-  font-weight:600;
-  border-top:1px solid #999;
-  padding-top:5px;
+/* ===== BUTTONS ===== */
+.actions{
+  clear:both;
+  margin-top:16px;
 }
-
-/* AMOUNT IN WORDS */
-.amount-words{
-  position:absolute;
-  left:20px;
-  bottom:90px;
-  width:480px;
-  font-size:12px;
+.actions button{
+  background:#2f36b3;
+  color:#fff;
+  border:none;
+  padding:7px 14px;
+  border-radius:6px;
+  cursor:pointer;
 }
+.no-print{}
 
-/* FOOTER */
-.footer{
-  position:absolute;
-  bottom:20px;
-  width:100%;
-  text-align:center;
-  font-size:11px;
-}
-
-/* PRINT */
+/* ===== PRINT / PDF ===== */
+@page{size:A4;margin:10mm;}
 @media print{
-  body{background:#fff;}
-  .invoice{margin:0;page-break-after:avoid;}
+  .no-print{display:none!important;}
+  .invoice{border:none;}
+  .totals{
+    float:none;
+    position:absolute;
+    right:12px;
+    bottom:14mm;
+  }
 }
 </style>
+</head>
+
+<body>
+
+<div class="invoice" id="invoice">
+
+<div class="header">
+  <div class="logo"><img src="LOGO.jpg"></div>
+  <div class="header-text">
+    <h1>Hello Notes</h1>
+    <p><b>GST:</b> 29AFQFS5154Q1ZU</p>
+    <p>No.6 Kurubarahalli Main Road, Kirloskar Layout</p>
+    <p>Bengaluru – 570079 | Phone: 8073431538</p>
+  </div>
+</div>
+
+<div class="line"></div>
+
+<div class="grid2">
+  <div><label>Invoice Number</label><input></div>
+  <div><label>Invoice Date</label><input type="date"></div>
+</div>
+
+<div class="mt10">
+  <label>Customer Name</label>
+  <input>
+</div>
+
+<table id="items">
+<thead>
+<tr>
+  <th>Item</th><th>Qty</th><th>Rate</th><th>Total</th>
+  <th class="no-print"></th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<button class="no-print" onclick="addRow()">+ Add Item</button>
+
+<div class="totals">
+  <div class="row"><span>Subtotal</span><span id="sub">₹0.00</span></div>
+
+  <div class="row" id="discountRow">
+    <span>Discount</span>
+    <span class="right">
+      <input id="disc" value="0" oninput="calc()">
+      <select id="discType" onchange="calc()">
+        <option>%</option><option>₹</option>
+      </select>
+    </span>
+  </div>
+
+  <div class="row">
+    <span>GST Base</span>
+    <select id="gstBase" onchange="calc()">
+      <option value="subtotal">On Subtotal</option>
+      <option value="discount">After Discount</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <span>GST %</span>
+    <input id="gst" value="9" oninput="calc()">
+  </div>
+
+  <div class="row"><span>CGST</span><span id="cgst">₹0.00</span></div>
+  <div class="row"><span>SGST</span><span id="sgst">₹0.00</span></div>
+
+  <div class="row grand"><span>Grand Total</span><span id="grand">₹0.00</span></div>
+  <div class="words" id="words">Amount in words: Rupees Only</div>
+</div>
+
+<div class="actions no-print">
+  <button onclick="downloadPDF()">Download PDF</button>
+  <button onclick="window.print()">Print</button>
+</div>
+
+</div>
+
+<script>
+const tbody=document.querySelector("#items tbody");
+
+function addRow(){
+  if(tbody.rows.length>=13) return;
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+    <td><input></td>
+    <td><input type="number" value="1" oninput="calc()"></td>
+    <td><input type="number" value="0" oninput="calc()"></td>
+    <td class="rt">0.00</td>
+    <td class="no-print"><button onclick="this.closest('tr').remove();calc()">X</button></td>
+  `;
+  tbody.appendChild(tr);
+  calc();
+}
+
+function numToWords(n){
+  const a=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten",
+  "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+  const b=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+  if(n<20) return a[n];
+  if(n<100) return b[Math.floor(n/10)]+" "+a[n%10];
+  if(n<1000) return a[Math.floor(n/100)]+" Hundred "+numToWords(n%100);
+  if(n<100000) return numToWords(Math.floor(n/1000))+" Thousand "+numToWords(n%1000);
+  if(n<10000000) return numToWords(Math.floor(n/100000))+" Lakh "+numToWords(n%100000);
+  return numToWords(Math.floor(n/10000000))+" Crore "+numToWords(n%10000000);
+}
+
+function calc(){
+  let subtotal=0;
+  document.querySelectorAll(".rt").forEach(c=>{
+    const r=c.parentElement;
+    const q=+r.children[1].children[0].value||0;
+    const rate=+r.children[2].children[0].value||0;
+    const t=q*rate;
+    c.innerText=t.toFixed(2);
+    subtotal+=t;
+  });
+
+  sub.innerText="₹"+subtotal.toFixed(2);
+
+  let d=+disc.value||0;
+  let discount=discType.value=="%"?subtotal*d/100:d;
+  let base=gstBase.value=="discount"?subtotal-discount:subtotal;
+  let gstAmt=base*(+gst.value/100);
+
+  cgst.innerText="₹"+(gstAmt/2).toFixed(2);
+  sgst.innerText="₹"+(gstAmt/2).toFixed(2);
+  grand.innerText="₹"+(base+gstAmt).toFixed(2);
+  words.innerText="Amount in words: "+numToWords(Math.round(base+gstAmt))+" Rupees Only";
+}
+
+function downloadPDF(){
+  const buttons=document.querySelectorAll(".no-print");
+  buttons.forEach(b=>b.style.display="none");
+  html2pdf().set({
+    margin:8,
+    filename:'Invoice.pdf',
+    html2canvas:{scale:2},
+    jsPDF:{unit:'mm',format:'a4'}
+  }).from(document.getElementById("invoice")).save()
+    .then(()=>buttons.forEach(b=>b.style.display=""));
+}
+
+addRow();
+</script>
+
+</body>
+</html></style>
 </head>
 
 <body>
@@ -161,3 +339,4 @@ tbody tr:nth-child(n+14){
 
 </body>
 </html>
+
