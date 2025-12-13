@@ -5,8 +5,8 @@
 <title>Invoice – Hello Notes</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
 body{
@@ -22,22 +22,17 @@ body{
   background:#fff;
   padding:20px;
 }
-.header-center{
+.header{
   display:flex;
   justify-content:center;
-}
-.header-wrap{
-  display:flex;
   align-items:center;
-  gap:16px;
+  gap:14px;
 }
-.logo-box{
-  width:80px;
-  height:80px;
+.logo{
+  width:70px;
 }
-.logo-box img{
-  max-width:100%;
-  max-height:100%;
+.logo img{
+  width:100%;
 }
 .header-text{
   text-align:center;
@@ -58,9 +53,10 @@ body{
 
 label{
   font-size:14px;
-  margin-bottom:4px;
   display:block;
+  margin-bottom:4px;
 }
+
 input,select{
   width:100%;
   height:36px;
@@ -87,7 +83,6 @@ th{
   background:#2f36b3;
   color:#fff;
   padding:8px;
-  font-size:14px;
 }
 td{
   border:1px solid #ccc;
@@ -95,9 +90,9 @@ td{
   vertical-align:middle;
 }
 td input{
-  border:none;
   height:28px;
   padding:0 6px;
+  border:none;
   line-height:1.2;
 }
 
@@ -134,12 +129,12 @@ td input{
   font-weight:600;
 }
 .words{
-  margin-top:8px;
   font-style:italic;
+  margin-top:8px;
 }
 
 .actions{
-  margin-top:15px;
+  margin-top:20px;
 }
 .actions button{
   background:#2f36b3;
@@ -152,7 +147,6 @@ td input{
 
 @media print{
   .no-print{display:none!important;}
-  body{background:#fff;padding:0;}
 }
 </style>
 </head>
@@ -161,24 +155,20 @@ td input{
 
 <div class="invoice" id="invoice">
 
-<!-- HEADER -->
-<div class="header-center">
-  <div class="header-wrap">
-    <div class="logo-box">
-      <img src="LOGO.jpg" id="logoImg">
-    </div>
-    <div class="header-text">
-      <h1>Hello Notes</h1>
-      <p><b>GST:</b> 29AFQFS5154Q1ZU</p>
-      <p>No.6 Kurubarahalli Main Road, Kirloskar Layout</p>
-      <p>Bengaluru – 570079 | Phone: 8073431538</p>
-    </div>
+<div class="header">
+  <div class="logo">
+    <img src="LOGO.jpg">
+  </div>
+  <div class="header-text">
+    <h1>Hello Notes</h1>
+    <p><b>GST:</b> 29AFQFS5154Q1ZU</p>
+    <p>No.6 Kurubarahalli Main Road, Kirloskar Layout</p>
+    <p>Bengaluru – 570079 | Phone: 8073431538</p>
   </div>
 </div>
 
 <div class="line"></div>
 
-<!-- DETAILS -->
 <div class="grid2">
   <div>
     <label>Invoice Number</label>
@@ -195,7 +185,6 @@ td input{
   <input>
 </div>
 
-<!-- ITEMS -->
 <table id="items">
 <thead>
 <tr>
@@ -211,14 +200,13 @@ td input{
 
 <button class="add no-print" onclick="addRow()">+ Add Item</button>
 
-<!-- TOTALS -->
 <div class="totals">
   <div class="row"><span>Subtotal</span><span id="sub">₹0.00</span></div>
 
   <div class="row">
     <span>Discount</span>
     <span class="right">
-      <input id="disc" value="0" type="number" oninput="calc()">
+      <input id="disc" value="0" oninput="calc()">
       <select id="discType" onchange="calc()">
         <option>%</option>
         <option>₹</option>
@@ -227,16 +215,8 @@ td input{
   </div>
 
   <div class="row">
-    <span>GST Base</span>
-    <select id="gstBase" onchange="calc()">
-      <option value="after">After Discount</option>
-      <option value="full">Subtotal</option>
-    </select>
-  </div>
-
-  <div class="row">
     <span>GST %</span>
-    <input id="gstRate" value="9" type="number" oninput="calc()">
+    <input id="gst" value="9" oninput="calc()">
   </div>
 
   <div class="row"><span>CGST</span><span id="cgst">₹0.00</span></div>
@@ -254,7 +234,6 @@ td input{
 </div>
 
 <script>
-const { jsPDF } = window.jspdf;
 const tbody=document.querySelector("#items tbody");
 
 function addRow(){
@@ -272,7 +251,7 @@ function addRow(){
 
 function calc(){
   let sub=0;
-  document.querySelectorAll(".rt").forEach((c,i)=>{
+  document.querySelectorAll(".rt").forEach(c=>{
     const r=c.parentElement;
     const q=+r.children[1].children[0].value||0;
     const rate=+r.children[2].children[0].value||0;
@@ -280,32 +259,37 @@ function calc(){
     c.innerText=t.toFixed(2);
     sub+=t;
   });
+
+  subEl=sub;
   document.getElementById("sub").innerText="₹"+sub.toFixed(2);
 
   let d=+disc.value||0;
   let discount=discType.value=="%"?sub*d/100:d;
-  let base=gstBase.value=="after"?sub-discount:sub;
-  let gst=base*(+gstRate.value/100);
+  let base=sub-discount;
+  let gstVal=base*(+gst.value/100);
 
-  cgst.innerText="₹"+gst.toFixed(2);
-  sgst.innerText="₹"+gst.toFixed(2);
-  let total=base+gst*2;
+  cgst.innerText="₹"+gstVal.toFixed(2);
+  sgst.innerText="₹"+gstVal.toFixed(2);
 
+  let total=base+gstVal*2;
   grand.innerText="₹"+total.toFixed(2);
   words.innerText="Amount in words: "+Math.round(total)+" Rupees Only";
 }
 
 function downloadPDF(){
-  const pdf=new jsPDF("p","mm","a4");
-  pdf.html(document.querySelector(".invoice"),{
-    scale:0.8,
-    callback:(doc)=>{
-      doc.save("Invoice.pdf");
-    }
-  });
+  html2pdf()
+    .set({
+      margin:10,
+      filename:'Invoice.pdf',
+      html2canvas:{scale:2},
+      jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+    })
+    .from(document.getElementById("invoice"))
+    .save();
 }
 
 addRow();
 </script>
+
 </body>
 </html>
