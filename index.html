@@ -266,6 +266,10 @@ function removeRow(btn){
   row.remove();
   calc();
 }
+  function removeRow(btn){
+  btn.closest("tr").remove();
+  calc();
+  }
   
 for(let i=0;i<13;i++) addRow();
 
@@ -317,6 +321,7 @@ calc();
 
 </body>
 </html>
+
 
 
 
