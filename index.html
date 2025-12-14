@@ -8,9 +8,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-*{box-sizing:border-box;}
+*{box-sizing:border-box}
 body{font-family:Poppins,sans-serif;background:#eef3ff;margin:0}
-.invoice{width:210mm;min-height:297mm;background:#fff;margin:auto;padding:12mm}
+.invoice{
+    width:210mm;
+    min-height:297mm;
+    background:#fff;
+    margin:auto;
+    padding:12mm;
+}
 
 /* HEADER */
 .header{text-align:center}
@@ -26,31 +32,50 @@ input,select{
 
 /* TABLE */
 table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{border:1px solid #c9b062;padding:6px;font-size:12px;text-align:center}
+th,td{
+    border:1px solid #c9b062;
+    padding:6px;
+    font-size:12px;
+    text-align:center;
+}
 th{background:#eef3ff;color:#1a4fa3}
 td input{border:none;text-align:center}
 
-/* REMOVE BUTTON */
+/* BUTTONS */
 .remove-btn{
     background:#c40000;color:#fff;border:none;
     width:20px;height:20px;border-radius:4px
+}
+.add-btn{
+    margin-top:5px;
+    padding:5px 10px;
 }
 
 /* TOTALS */
 .totals{
     border:2px solid #c9b062;
-    padding:8px;margin-top:10px;
-    page-break-inside:avoid
+    padding:8px;
+    margin-top:10px;
+    page-break-inside:avoid;
 }
 .row{display:flex;justify-content:space-between;margin:4px 0;font-size:13px}
 .grand{font-weight:600;color:#1a4fa3;font-size:15px}
 
 /* WORDS */
-.words{border:1px solid #c9b062;padding:6px;margin-top:8px;font-size:12px}
+.words{
+    border:1px solid #c9b062;
+    padding:6px;
+    margin-top:8px;
+    font-size:12px;
+    page-break-inside:avoid;
+}
+
+/* ACTIONS */
+.actions{margin-top:10px}
 
 /* PRINT / PDF */
 @media print{
-    .remove-btn,.actions{display:none !important}
+    .remove-btn,.actions,.add-btn{display:none !important}
     input,select{border:none}
     body{background:#fff}
 }
@@ -62,7 +87,7 @@ td input{border:none;text-align:center}
 <div class="invoice" id="invoice">
 
 <div class="header">
-<img src="LOGO.jpg">
+<img src="https://i.imgur.com/7Y8Y6R8.png">
 <h2>Hello Notes</h2>
 <p>GST: 29AQFS154Q1ZU</p>
 <p>No.6 Kurubarahalli Main Road, Bengaluru – 570079</p>
@@ -84,21 +109,11 @@ td input{border:none;text-align:center}
 <th>Item</th><th>Qty</th><th>Rate</th><th>Total</th><th></th>
 </tr>
 </thead>
-<tbody>
-<script>
-for(let i=0;i<13;i++){
-document.write(`
-<tr>
-<td><input></td>
-<td><input type="number" value="1" oninput="calc()"></td>
-<td><input type="number" value="0" oninput="calc()"></td>
-<td class="rowTotal">0.00</td>
-<td><button class="remove-btn" onclick="removeRow(this)">×</button></td>
-</tr>`);
-}
-</script>
+<tbody id="itemBody">
 </tbody>
 </table>
+
+<button class="add-btn" onclick="addItem()">+ Add Item</button>
 
 <div class="totals">
 <div class="row"><span>Subtotal</span><span>₹ <span id="subtotal">0.00</span></span></div>
@@ -109,6 +124,128 @@ document.write(`
 <select id="discountType" onchange="calc()">
 <option value="percent">%</option>
 <option value="flat">₹</option>
+</select>
+</div>
+
+<div class="row">
+<span>GST Based On</span>
+<select id="gstBase" onchange="calc()">
+<option value="subtotal">Subtotal</option>
+<option value="afterDiscount">After Discount</option>
+</select>
+</div>
+
+<div class="row">
+<span>GST %</span>
+<input type="number" id="gst" value="9" oninput="calc()" style="width:80px">
+</div>
+
+<div class="row"><span>CGST</span><span>₹ <span id="cgst">0.00</span></span></div>
+<div class="row"><span>SGST</span><span>₹ <span id="sgst">0.00</span></span></div>
+
+<div class="row grand"><span>Grand Total</span><span>₹ <span id="grand">0.00</span></span></div>
+</div>
+
+<div class="words">
+Amount in Words: <span id="words"></span>
+</div>
+
+<div class="actions">
+<button onclick="printInvoice()">Print</button>
+<button onclick="downloadPDF()">Download PDF</button>
+</div>
+
+</div>
+
+<script>
+const itemBody=document.getElementById("itemBody");
+
+function addItem(){
+    const row=document.createElement("tr");
+    row.innerHTML=`
+        <td><input></td>
+        <td><input type="number" value="1" oninput="calc()"></td>
+        <td><input type="number" value="0" oninput="calc()"></td>
+        <td class="rowTotal">0.00</td>
+        <td><button class="remove-btn" onclick="removeRow(this)">×</button></td>
+    `;
+    itemBody.appendChild(row);
+    calc();
+}
+
+for(let i=0;i<13;i++) addItem();
+
+function removeRow(btn){
+    btn.closest("tr").remove();
+    calc();
+}
+
+function calc(){
+    let subtotal=0;
+    document.querySelectorAll("#items tbody tr").forEach(r=>{
+        let q=+r.children[1].children[0].value||0;
+        let rate=+r.children[2].children[0].value||0;
+        let t=q*rate;
+        r.querySelector(".rowTotal").innerText=t.toFixed(2);
+        subtotal+=t;
+    });
+    subtotalEl.innerText=subtotal.toFixed(2);
+
+    let discVal=+discountVal.value||0;
+    let discAmt=discountType.value==="percent"
+        ? subtotal*(discVal/100)
+        : discVal;
+
+    let base=gstBase.value==="afterDiscount"
+        ? subtotal-discAmt
+        : subtotal;
+
+    let gstAmt=base*(+gst.value/100);
+    cgst.innerText=(gstAmt/2).toFixed(2);
+    sgst.innerText=(gstAmt/2).toFixed(2);
+
+    let grand=(subtotal-discAmt)+gstAmt;
+    document.getElementById("grand").innerText=grand.toFixed(2);
+    words.innerText=numberToWords(grand);
+}
+
+const subtotalEl=document.getElementById("subtotal");
+
+function numberToWords(num){
+    const a=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten",
+    "Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
+    const b=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+    let n=Math.floor(num);
+    if(n===0) return "Zero Rupees Only";
+
+    function w(x){
+        if(x<20) return a[x];
+        if(x<100) return b[Math.floor(x/10)]+" "+a[x%10];
+        if(x<1000) return a[Math.floor(x/100)]+" Hundred "+w(x%100);
+        if(x<100000) return w(Math.floor(x/1000))+" Thousand "+w(x%1000);
+        return w(Math.floor(x/100000))+" Lakh "+w(x%100000);
+    }
+    return w(n)+" Rupees Only";
+}
+
+function downloadPDF(){
+    document.querySelector(".actions").style.display="none";
+    html2pdf().set({
+        margin:5,
+        filename:'HelloNotes_Invoice.pdf',
+        html2canvas:{scale:2},
+        jsPDF:{format:'a4',orientation:'portrait'}
+    }).from(invoice).save().then(()=>{
+        document.querySelector(".actions").style.display="block";
+    });
+}
+
+function printInvoice(){window.print()}
+calc();
+</script>
+
+</body>
+</html><option value="flat">₹</option>
 </select>
 </div>
 
@@ -204,3 +341,4 @@ calc();
 
 </body>
 </html>
+
