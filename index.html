@@ -19,7 +19,7 @@ body{
   margin:auto;
   background:#fff;
   padding:25px;
-  border-top:6px solid #1f3fa3;
+  border-top:6px solid #1f3fa3; /* Blue */
 }
 
 /* HEADER */
@@ -35,11 +35,28 @@ body{
   text-align:center;
   width:100%;
   font-size:12px;
+  background:transparent;
+}
+
+/* COMPANY */
+.company-name{
+  font-size:20px;
+  font-weight:700;
+  color:#1f3fa3; /* Blue */
+  border-bottom:3px solid #c9b037; /* Gold */
+  display:inline-block;
+  padding-bottom:3px;
+  margin-bottom:4px;
 }
 
 /* LABEL FIELD */
 .field{display:flex;flex-direction:column;}
-.field label{font-size:11px;color:#444;margin-bottom:2px;}
+.field label{
+  font-size:11px;
+  color:#1f3fa3;
+  font-weight:600;
+  margin-bottom:2px;
+}
 
 /* TOP */
 .top-fields{
@@ -48,7 +65,11 @@ body{
   gap:10px;
   margin-top:15px;
 }
-.top-fields input{padding:6px;width:100%;}
+.top-fields input{
+  padding:6px;
+  width:100%;
+  border:1px solid #bbb;
+}
 
 /* TABLE */
 table{
@@ -58,11 +79,14 @@ table{
   font-size:13px;
 }
 th,td{
-  border:1px solid #ccc;
+  border:1px solid #c9b037; /* Gold */
   padding:6px;
   text-align:center;
 }
-th{background:#f1f4ff;}
+th{
+  background:#f1f4ff;
+  color:#1f3fa3;
+}
 td input{
   width:100%;
   border:none;
@@ -85,8 +109,15 @@ td input{
 .total-row input,.total-row select{
   width:140px;
   padding:4px;
+  border:1px solid #bbb;
 }
-.grand{font-weight:600;font-size:15px;color:#1f3fa3;}
+.grand{
+  font-weight:700;
+  font-size:15px;
+  color:#1f3fa3;
+  border-top:2px solid #c9b037;
+  padding-top:6px;
+}
 
 /* WORDS */
 .words-box{
@@ -94,17 +125,7 @@ td input{
   margin-top:10px;
   padding:8px;
 }
-  
-.company-name{
-  color:#1f3fa3;            /* Blue text */
-  font-weight:700;           /* Bold */
-  font-size:20px;            /* Slightly bigger */
-  background: linear-gradient(to right, #fff7e0 0%, #fff7e0 100%); /* soft highlight */
-  padding:2px 4px;
-  border-bottom: 3px solid #c9b037;  /* Gold underline */
-  text-align:center;
-}
-  
+
 /* BUTTONS */
 button{
   padding:6px 12px;
@@ -117,17 +138,8 @@ button{
 .no-print{display:block;}
 .footer-actions{margin-top:15px;display:flex;gap:10px;}
 
-@media print {
-    input, select {
-        border: 1px solid #000 !important; /* show box */
-        background: #fff !important;       /* white background */
-        -webkit-print-color-adjust: exact; /* ensure colors print */
-        color: #000 !important;
-        padding: 2px 4px;
-    }
-  }
-  
-  .remove-row{
+/* REMOVE */
+.remove-row{
   background:#c70000;
   color:#fff;
   border:none;
@@ -137,10 +149,29 @@ button{
   border-radius:3px;
   font-size:12px;
 }
-.remove-row:hover{
-  background:#ff1a1a;
+
+/* PRINT RULES */
+@media print{
+
+  .no-print,
+  .remove-row{
+    display:none !important;
+  }
+
+  .header input{
+    border:none !important;
+    outline:none !important;
+    background:transparent !important;
+    pointer-events:none !important;
+  }
+
+  input, select{
+    border:1px solid #000 !important;
+    background:#fff !important;
+    color:#000 !important;
+    padding:2px 4px;
+  }
 }
-  
 </style>
 </head>
 
@@ -150,11 +181,11 @@ button{
 
 <!-- HEADER -->
 <div class="header">
-<img id="logoPreview" src="LOGO.jpg">>
+<img id="logoPreview" src="LOGO.jpg">
 <input value="Hello Notes" class="company-name" readonly>
-<input value="GST: 29AFQFS154Q1ZU">
-<input value="No.6 Kurubarahalli Main Road, Kirloskar Layout, Bengaluru – 570079">
-<input value="Phone: 8073431538">
+<input value="GST: 29AFQFS154Q1ZU" readonly>
+<input value="No.6 Kurubarahalli Main Road, Kirloskar Layout, Bengaluru – 570079" readonly>
+<input value="Phone: 8073431538" readonly>
 </div>
 
 <!-- TOP -->
@@ -190,7 +221,7 @@ button{
 <button onclick="addRow()">+ Add Item</button>
 </div>
 
-<!-- TOTALS -->
+<!-- TOTAL -->
 <div class="total-box">
 
 <div class="total-row">
@@ -250,27 +281,20 @@ button{
 </div>
 
 <script>
-
 function addRow(){
 const t=document.querySelector("#itemsTable tbody");
 const r=t.insertRow();
 r.innerHTML=`<td><input></td>
 <td><input type="number" value="1" oninput="calc()"></td>
 <td><input type="number" value="0" oninput="calc()"></td>
-<td><input readonly> <button-type="button" class="remove-row" onclick="removeRow(this)">✖</button>
-  </td>`;
+<td><input readonly> <button type="button" class="remove-row" onclick="removeRow(this)">✖</button></td>`;
 }
-  
+
 function removeRow(btn){
-  const row = btn.closest("tr");
-  row.remove();
-  calc();
+btn.closest("tr").remove();
+calc();
 }
-  function removeRow(btn){
-  btn.closest("tr").remove();
-  calc();
-  }
-  
+
 for(let i=0;i<13;i++) addRow();
 
 function calc(){
@@ -282,7 +306,7 @@ let t=q*rate;
 r.cells[3].children[0].value=t.toFixed(2);
 subtotal+=t;
 });
-subtotalEl.innerText=subtotal.toFixed(2);
+subtotal.innerText=subtotal.toFixed(2);
 
 let d=+discount.value;
 let discAmt=(discountType.value=="%")?(subtotal*d/100):d;
@@ -296,8 +320,6 @@ let g=(subtotal-discAmt)+gstAmt;
 grand.innerText=g.toFixed(2);
 words.innerText=numToWords(Math.round(g))+" Only";
 }
-
-const subtotalEl=subtotal;
 
 function numToWords(n){
 const a=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"];
@@ -321,10 +343,3 @@ calc();
 
 </body>
 </html>
-
-
-
-
-
-
-
